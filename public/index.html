@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>供应商账单异常分析</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>供应商账单异常分析</h1>
+    <span class="muted" id="health"></span>
+    <div class="spacer"></div>
+    <button id="btn-run-matching" class="primary">运行三单匹配</button>
+    <button id="btn-theme" title="切换亮/暗主题">◐</button>
+  </header>
+
+  <nav class="tabs">
+    <button data-view="overview" class="active">概览</button>
+    <button data-view="matching">匹配过程</button>
+    <button data-view="anomalies">异常分类</button>
+    <button data-view="fixes">修复审批</button>
+    <button data-view="payables">待付款清单</button>
+  </nav>
+
+  <main>
+    <!-- 概览 -->
+    <section id="view-overview" class="view active">
+      <div class="kpi-row" id="kpis"></div>
+      <div class="charts">
+        <div class="card">
+          <h2>影响金额 · 按异常类型</h2>
+          <p class="sub">未结异常的多付风险金额（元）</p>
+          <div id="chart-by-type"></div>
+          <details class="table-twin">
+            <summary>表格视图</summary>
+            <table id="table-by-type"></table>
+          </details>
+        </div>
+        <div class="card">
+          <h2>影响金额 · 按责任环节</h2>
+          <p class="sub">异常定位到的责任环节（元）</p>
+          <div id="chart-by-stage"></div>
+          <details class="table-twin">
+            <summary>表格视图</summary>
+            <table id="table-by-stage"></table>
+          </details>
+        </div>
+      </div>
+      <div class="card">
+        <h2>最近匹配运行</h2>
+        <table id="table-runs"></table>
+      </div>
+    </section>
+
+    <!-- 匹配过程 -->
+    <section id="view-matching" class="view">
+      <div class="card">
+        <div class="filter-row">
+          <label>匹配运行
+            <select id="sel-run"></select>
+          </label>
+          <span class="muted" id="run-meta"></span>
+        </div>
+        <table id="table-trace"></table>
+      </div>
+    </section>
+
+    <!-- 异常分类 -->
+    <section id="view-anomalies" class="view">
+      <div class="card">
+        <div class="filter-row">
+          <label>类型 <select id="flt-type"><option value="">全部</option></select></label>
+          <label>责任环节 <select id="flt-stage"><option value="">全部</option></select></label>
+          <label>状态
+            <select id="flt-status">
+              <option value="">全部</option>
+              <option value="open" selected>未结</option>
+              <option value="resolved">已修复</option>
+              <option value="dismissed">已关闭</option>
+            </select>
+          </label>
+          <label>供应商 <select id="flt-supplier"><option value="">全部</option></select></label>
+        </div>
+        <table id="table-anomalies"></table>
+      </div>
+    </section>
+
+    <!-- 修复审批 -->
+    <section id="view-fixes" class="view">
+      <div class="card">
+        <h2>待审批修复方案</h2>
+        <p class="sub">审批通过后自动生成调整分录、新账单版本，并同步待付款清单</p>
+        <table id="table-fixes-pending"></table>
+      </div>
+      <div class="card">
+        <h2>已处理</h2>
+        <table id="table-fixes-done"></table>
+      </div>
+    </section>
+
+    <!-- 待付款清单 -->
+    <section id="view-payables" class="view">
+      <div class="card">
+        <div class="filter-row">
+          <label>供应商 <select id="pay-supplier"><option value="">全部</option></select></label>
+          <label>期间 <select id="pay-period"><option value="">全部</option></select></label>
+        </div>
+        <table id="table-payables"></table>
+        <div class="section-title">账单版本历史</div>
+        <table id="table-versions"></table>
+      </div>
+    </section>
+  </main>
+
+  <!-- 异常详情 / 证据链抽屉 -->
+  <div class="drawer-mask" id="drawer-mask"></div>
+  <aside class="drawer" id="drawer">
+    <button class="close" id="drawer-close">✕</button>
+    <div id="drawer-body"></div>
+  </aside>
+
+  <div class="tooltip" id="tooltip"></div>
+  <div class="toast" id="toast"></div>
+  <script src="/app.js" type="module"></script>
+</body>
+</html>

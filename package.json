@@ -1,0 +1,15 @@
+{
+  "name": "supplier-bill-anomaly",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "供应商账单异常分析：三单匹配、异常定位、修复审批、账单版本与待付款同步",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "seed": "node scripts/seed.js",
+    "test": "node --test test/"
+  }
+}
